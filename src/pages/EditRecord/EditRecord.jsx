@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+// src/pages/EditRecord.js
+
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import userService from '../services/UserService';
 
-const Record = () => {
+const EditRecord = () => {
+      const { userId } = useParams(); // Get the userId from URL params
       const [formData, setFormData] = useState({
             firstName: '',
             lastName: '',
@@ -9,6 +13,20 @@ const Record = () => {
             contactNo: '',
             studentId: ''
       });
+      const navigate = useNavigate();
+
+      useEffect(() => {
+            const fetchUser = async () => {
+                  try {
+                        const user = await userService.fetchUserById(userId);
+                        setFormData(user);
+                  } catch (error) {
+                        console.error('Error fetching user:', error);
+                  }
+            };
+
+            fetchUser();
+      }, [userId]);
 
       const handleChange = (e) => {
             const { name, value } = e.target;
@@ -18,25 +36,30 @@ const Record = () => {
       const handleSubmit = async (e) => {
             e.preventDefault();
             try {
-                  const response = await userService.createUser(formData);
-                  console.log('User created successfully:', response);
-                  alert('User created successfully!');
+                  await userService.updateUserById(userId, formData);
+                  alert('User updated successfully!');
+                  navigate('/'); // Redirect back to the details page
             } catch (error) {
-                  console.error('Error creating user:', error);
-                  alert('Failed to create user.');
+                  console.error('Error updating user:', error);
+                  alert('Failed to update user.');
             }
       };
 
+      const handleCancel = () => {
+            navigate('/'); // Navigate back 
+      };
+
       return (
-            <form onSubmit={handleSubmit} className="mx-auto bg-gray-300 shadow-md rounded p-6">
-                  <div className="">
+            <div className='mx-5 my-5  h-auto'>
+
+                  <form onSubmit={handleSubmit} className="mx-auto bg-gray-300 shadow-md rounded px-6 pb-6">
+                        <span className="text-xl flex font-bold px-5 py-5  justify-center">UPDATE YOUR DETAILS</span>
                         <div className="grid grid-cols-1 sm:grid-cols-2 mx-4 sm:mx-[50px] mb-5 gap-8 sm:gap-[10px]">
                               <div className="mb-2 mx-5">
                                     <label className="block text-base font-medium text-gray-700">First Name</label>
                                     <input
                                           type="text"
                                           name="firstName"
-                                          placeholder="First Name"
                                           value={formData.firstName}
                                           onChange={handleChange}
                                           className="mt-1 px-2 block w-full h-10 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
@@ -48,7 +71,6 @@ const Record = () => {
                                     <input
                                           type="text"
                                           name="lastName"
-                                          placeholder="Last Name"
                                           value={formData.lastName}
                                           onChange={handleChange}
                                           className="mt-1 px-2 block w-full h-10 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
@@ -60,7 +82,6 @@ const Record = () => {
                                     <input
                                           type="date"
                                           name="dob"
-                                          placeholder="Date of Birth"
                                           value={formData.dob}
                                           onChange={handleChange}
                                           className="mt-1 px-2 block w-full h-10 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
@@ -72,25 +93,23 @@ const Record = () => {
                                     <input
                                           type="text"
                                           name="contactNo"
-                                          placeholder="0712345678"
                                           value={formData.contactNo}
                                           onChange={handleChange}
                                           className="mt-1 px-2 block w-full h-10 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                                           required
                                     />
                               </div>
-                              <div className="mb-4 mx-5">
-                                    {/* <label className="block text-base font-medium text-gray-700">Student Id</label>
+                              {/* <div className="mb-4 mx-5">
+                                    <label className="block text-base font-medium text-gray-700">Student Id</label>
                                     <input
                                           type="text"
                                           name="studentId"
-                                          placeholder="user-123456"
                                           value={formData.studentId}
                                           onChange={handleChange}
                                           className="mt-1 px-2 block w-full h-10 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                                           required
-                                    /> */}
-                              </div>
+                                    />
+                              </div> */}
                               <div className="border-dashed border-2 mx-5 border-gray-500 flex justify-center items-center h-[70px] cursor-pointer">
                                     <p className="text-lg font-semibold text-gray-500">+ Add Image</p>
                               </div>
@@ -100,20 +119,22 @@ const Record = () => {
                                           className="w-full text-base bg-indigo-500 text-white py-2 px-4 rounded hover:bg-indigo-600"
                                     >
                                           Submit Information
+
                                     </button>
                               </div>
                               <div className="mb-4 mx-5">
                                     <button
                                           type="button"
+                                          onClick={handleCancel}
                                           className="w-full bg-gray-500 text-base text-white py-2 px-4 rounded hover:bg-gray-600"
                                     >
-                                          Submit Image
+                                          Cancel
                                     </button>
                               </div>
                         </div>
-                  </div>
-            </form>
+                  </form>
+            </div>
       );
 };
 
-export default Record;
+export default EditRecord;

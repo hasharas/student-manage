@@ -1,6 +1,6 @@
 import React from 'react';
 import Record from '../Record/Record';
-import DetailView from '../DetailsView/DetailView';
+import DetailView from '../TableView/DetailView';
 
 const Home = () => {
       return (
