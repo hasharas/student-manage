@@ -35,17 +35,19 @@ const DetailView = () => {
             fetchUsers();
       }, []);
 
-      //update and create user
+      // Update and create user
       const handleSubmit = async (data) => {
             if (isEditMode) {
                   try {
-                        //update user 
+                        // Update user
                         const updatedUser = await userService.updateUserById(currentEditId, data);
 
                         if (updatedUser) {
                               setUsers((prev) =>
                                     prev.map((user) =>
-                                          user.id === currentEditId ? { ...user, ...updatedUser } : user
+                                          user.id === currentEditId
+                                                ? { ...user, ...updatedUser, dob: new Date(updatedUser.dob).toISOString().split('T')[0] }
+                                                : user
                                     )
                               );
                               alert('User updated successfully!');
@@ -59,7 +61,10 @@ const DetailView = () => {
                   try {
                         // Create a new user
                         const newUser = await userService.createUser(data);
-                        setUsers((prev) => [...prev, newUser]);
+                        setUsers((prev) => [
+                              ...prev,
+                              { ...newUser, dob: new Date(newUser.dob).toISOString().split('T')[0] },
+                        ]);
                         alert('User added successfully!');
                   } catch (error) {
                         console.error('Error adding user:', error);
@@ -69,19 +74,20 @@ const DetailView = () => {
             resetForm();
       };
 
-      //edit handlee
+      // Edit handler
       const handleEdit = (user) => {
             setIsEditMode(true);
             setCurrentEditId(user.id);
             setFormData({
                   firstName: user.firstName,
                   lastName: user.lastName,
-                  dob: new Date(user.dob).toISOString().split('T')[0], // to date string
+                  dob: new Date(user.dob).toISOString().split('T')[0], // To date string
                   contactNo: user.contactNo,
                   id: user.id,
             });
       };
-      //delete handlee
+
+      // Delete handler
       const handleDelete = async (userId) => {
             try {
                   await userService.deleteUserById(userId);
@@ -91,7 +97,8 @@ const DetailView = () => {
                   console.error('Error deleting user:', error);
             }
       };
-      //after submiting reset form 
+
+      // After submitting reset form
       const resetForm = () => {
             setFormData({
                   firstName: '',
