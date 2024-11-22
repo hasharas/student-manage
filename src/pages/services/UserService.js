@@ -33,7 +33,7 @@ class UserService extends HttpService {
       // Update a user by ID
       async updateUserById(userId, data) {
             const response = await this.sendRequest({
-                  method: 'PUT',
+                  method: 'PATCH',
                   url: URL.UPDATE_ID_USER.replace('{user-id}', userId),
                   data,
             });
