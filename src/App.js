@@ -2,7 +2,7 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 // import Home from './pages/Home/Home';
 // import EditRecord from './pages/EditRecord/StudentTable';
 // import Record from './pages/Record/Record';
-import DetailView from './pages/TableView/DetailView';
+import DetailView from './pages/DetailView/DetailView';
 // import Record from './pages/Record/Record';
 
 
