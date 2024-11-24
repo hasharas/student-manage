@@ -11,7 +11,7 @@ const StudentTable = ({ users, onEdit, onDelete }) => {
                         <th className="border border-gray-300 px-4 py-2">Last Name</th>
                         <th className="border border-gray-300 px-4 py-2">DOB</th>
                         <th className="border border-gray-300 px-4 py-2">Contact No</th>
-
+                        <th className="border border-gray-300 px-4 py-2">image</th>
                         <th className="border border-gray-300 px-4 py-2"></th>
                     </tr>
                 </thead>
@@ -23,6 +23,10 @@ const StudentTable = ({ users, onEdit, onDelete }) => {
                             <td className="border border-gray-300 px-4 py-2">{user.lastName}</td>
                             <td className="border border-gray-300 px-4 py-2">{user.dob}</td>
                             <td className="border border-gray-300 px-4 py-2">{user.contactNo}</td>
+                            <td className="border border-gray-300 px-4 py-2">
+                                <img src={user.imageUrl} alt="User" className="w-10 h-10 object-cover" />
+                            </td>
+
                             <td className="border border-gray-300 px-4 py-2 flex justify-around">
                                 <button
                                     onClick={() => onEdit(user)}

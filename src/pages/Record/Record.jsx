@@ -3,9 +3,18 @@ import React, { useState } from 'react';
 
 const Recorde = ({ formData, setFormData, isEditMode, onSubmit, onCancel }) => {
       const [error, setError] = useState('');
+      const [imageFile, setImageFile] = useState(null);
 
       const handleChange = (e) => {
-            const { name, value } = e.target;
+
+            const { name, value, type } = e.target;
+
+            if (type === "file") {
+                  const file = e.target.files[0];
+                  setImageFile(file); // Set the uploaded file
+                  return;
+            }
+
             if (name === 'contactNo') {
                   const isValid = /^[+94]?[0-9]{0,15}$/.test(value);
                   if (!isValid) {
@@ -18,13 +27,31 @@ const Recorde = ({ formData, setFormData, isEditMode, onSubmit, onCancel }) => {
             setFormData((prev) => ({ ...prev, [name]: value }));
       };
 
-      const handleFormSubmit = (e) => {
+      const handleFormSubmit = async (e) => {
             e.preventDefault();
+
             if (!/^[+94]?[0-9]{0,15}$/.test(formData.contactNo)) {
                   alert('Please provide a valid contact number (7-15 digits, optional "+" at the start).');
                   return;
             }
-            onSubmit(formData);
+
+
+
+            //include both text and the uploaded image
+            const formDataObj = new FormData();
+            formDataObj.append("firstName", formData.firstName);
+            formDataObj.append("lastName", formData.lastName);
+            formDataObj.append("dob", formData.dob);
+            formDataObj.append("contactNo", formData.contactNo);
+
+            if (imageFile) {
+                  formDataObj.append("image", imageFile); // uploaded image to FormData
+            } else {
+                  alert("Please upload an image.");
+                  return;
+            }
+            // Pass the FormData object to the onSubmit function
+            onSubmit(formDataObj);
       };
 
       return (
@@ -79,14 +106,16 @@ const Recorde = ({ formData, setFormData, isEditMode, onSubmit, onCancel }) => {
                         /> */}
                         <input
                               type="file"
-                              name="contactNo"
-                              value={formData.image}
+                              name="image"
+                              // value={formData.imageUrl}
                               onChange={handleChange}
-                              placeholder="Contact Number"
+                              // placeholder="image"
                               className="border p-2 rounded"
                               required
                         />
-
+                        {/* <div className="border-dashed border-2 mx-5 border-gray-500 flex justify-center items-center h-[70px] cursor-pointer">
+                              <p className="text-lg font-semibold text-gray-500" onChange={handleChange}>+ Add Image</p>
+                        </div> */}
 
                         {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
                   </div>

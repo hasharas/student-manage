@@ -12,6 +12,7 @@ const DetailView = () => {
             dob: '',
             contactNo: '',
             id: '',
+            imageUrl: '',
       }); // Form data state
 
       const [isEditMode, setIsEditMode] = useState(false);
@@ -84,6 +85,7 @@ const DetailView = () => {
                   dob: new Date(user.dob).toISOString().split('T')[0], // To date string
                   contactNo: user.contactNo,
                   id: user.id,
+                  imageUrl: user.imageUrl,
             });
       };
 
@@ -106,6 +108,7 @@ const DetailView = () => {
                   dob: '',
                   contactNo: '',
                   id: '',
+                  imageUrl: '',
             });
             setIsEditMode(false);
             setCurrentEditId(null);
