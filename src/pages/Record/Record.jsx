@@ -11,7 +11,7 @@ const Recorde = ({ formData, setFormData, isEditMode, onSubmit, onCancel }) => {
 
             if (type === "file") {
                   const file = e.target.files[0];
-                  setImageFile(file); // Set the uploaded file
+                  setImageFile(file);
                   return;
             }
 
@@ -21,7 +21,7 @@ const Recorde = ({ formData, setFormData, isEditMode, onSubmit, onCancel }) => {
                         setError('Invalid contact number. Only digits and an optional "+" at the start are allowed.');
                         return;
                   } else {
-                        setError(''); // Clear error if valid
+                        setError('');
                   }
             }
             setFormData((prev) => ({ ...prev, [name]: value }));
@@ -46,12 +46,10 @@ const Recorde = ({ formData, setFormData, isEditMode, onSubmit, onCancel }) => {
 
             if (imageFile) {
                   formDataObj.append("image", imageFile); // uploaded image to FormData
-            } else {
-                  alert("Please upload an image.");
-                  return;
             }
-            // Pass the FormData object to the onSubmit function
+            // Pass the FormData object 
             onSubmit(formDataObj);
+            setImageFile(null);
       };
 
       return (
@@ -104,15 +102,28 @@ const Recorde = ({ formData, setFormData, isEditMode, onSubmit, onCancel }) => {
                               className="border p-2 rounded"
                               required
                         /> */}
-                        <input
-                              type="file"
-                              name="image"
-                              // value={formData.imageUrl}
-                              onChange={handleChange}
-                              // placeholder="image"
-                              className="border p-2 rounded"
-                              required
-                        />
+                        <div className=''>
+                              {isEditMode && formData.imageUrl && (
+                                    <div className="mb-2">
+                                          <p className="text-sm text-black mb-2">Current Image:</p>
+                                          <img
+                                                src={formData.imageUrl}
+                                                alt="Current"
+                                                className="w-32 h-32 object-cover border rounded"
+                                          />
+                                    </div>
+                              )}
+
+                              <input
+                                    type="file"
+                                    name="image"
+                                    // value={formData.imageUrl}
+                                    onChange={handleChange}
+                                    // placeholder="image"
+                                    className="border p-2 rounded w-full "
+                                    accept='image/*'
+                              />
+                        </div>
                         {/* <div className="border-dashed border-2 mx-5 border-gray-500 flex justify-center items-center h-[70px] cursor-pointer">
                               <p className="text-lg font-semibold text-gray-500" onChange={handleChange}>+ Add Image</p>
                         </div> */}
