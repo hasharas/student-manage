@@ -23,8 +23,8 @@ const StudentTable = ({ users, onEdit, onDelete }) => {
                             <td className="border border-gray-300 px-4 py-2">{user.lastName}</td>
                             <td className="border border-gray-300 px-4 py-2">{user.dob}</td>
                             <td className="border border-gray-300 px-4 py-2">{user.contactNo}</td>
-                            <td className="border border-gray-300 px-4 py-0">
-                                <img src={user.imageUrl} alt="User" className="w-10 h-10 object-cover" />
+                            <td className="border border-gray-300 px-4 py-0 text-center">
+                                <img src={user.imageUrl} alt="User" className="w-10 h-10 object-cover mx-auto " />
                             </td>
 
                             <td className="border border-gray-300 px-4 py-2 flex justify-around">
